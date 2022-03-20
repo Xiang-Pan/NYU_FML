@@ -1,0 +1,535 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{bbm} 
+\usepackage{tabularx}
+\usepackage{amsopn}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{bm}
+\title{%
+   Homework 1 \\
+  \large Fondations of Machine Learning \\}
+\author{Xiang Pan (xp2030)}
+
+\begin{document}
+
+
+\maketitle
+
+\section*{A Concentration of bound}
+\section{}
+\subsection{(a)}
+According to the Hoeffding’s Inequality, we have
+
+\begin{equation}
+  \operatorname{Pr}[R(h)-\widehat{R}(h) \geq \epsilon] \leq e^{-2 m \epsilon^{2}}
+\end{equation}
+
+We use $\epsilon = \frac{1}{2}$ here, thus we have
+
+\begin{equation}
+  \operatorname{Pr}[R(h)-\widehat{R}(h) \geq \frac{1}{2}] \leq e^{-2 m \frac{1}{4}} = e^{-\frac{1}{2}m} < e^{-\frac{1}{3}m}
+\end{equation}
+
+So we will not have h,
+\begin{equation}
+  R(h)-\widehat{R}(h) \geq \frac{1}{2},
+\end{equation}
+with probability at least $e^{-\frac{1}{3}m}$.
+
+\subsection{(b)}
+
+The algorithm is that for all the samples in the training dataset, we assign label 1 to them, for any other samples, we assign label 0.
+
+\begin{equation}
+    R(h)=\operatorname{Pr}_{x \sim D}[h(x) \neq c(x)]=\underset{x \sim D}{\mathrm{E}}\left[1_{h(x) \neq c(x)}\right].
+\end{equation}
+  
+We have $\widehat{R}_{S}\left(h_{S}\right)=0$, and ${R}(h_S)=1.$
+
+According to the definition of $R(h)$, the training dataset samples is limited/finity, for the expectation, the final error is 1. So we have,
+
+\begin{equation}
+  R\left(h_{S}\right)-\widehat{R}_{S}\left(h_{S}\right)=1
+\end{equation}
+
+\subsection{(c)}
+
+The (a) part is about the probability and the Hypothesis $h$ is not conditional on the data samples $S$. But for given Hypothesis and given data samples, we can design a algorithm to achieve the (b) part.
+
+\section*{PAC-Bayesian bound}
+\section{}
+\subsection{(a)}
+The Rademacher complexity bound is,
+\begin{equation}
+  \mathrm{E}[g(z)] \leq \frac{1}{m} \sum_{i=1}^{m} g\left(z_{i}\right)+2 \Re_{m}(G)+\sqrt{\frac{\log \frac{1}{\delta}}{2 m}}.
+\end{equation}
+
+We already know that $L(h,z) = l(h(x),y)$, L is a family of functions mapping from $ \mathbb{R} \times y \to [0,1]$. Directly apply the Rademacher complexity bound,
+
+\begin{equation}
+\underset{\underset{z \sim D}{h \sim Q}}{\mathbb{E}}[L(h, z)] \leq \underset{h \sim Q}{\mathbb{E}}\left[\frac{1}{m} \sum_{i=1}^{m} L\left(h, z_{i}\right)\right]+2 \Re_{m}\left(g_{\mu}\right)+\sqrt{\frac{\log \frac{1}{\delta}}{2 m}} \label{eq:2_1_a}
+\end{equation}
+
+\subsection{(b)}
+
+Follow the result from \eqref{eq:2_1_a}, and the inequality from the statement,
+
+\begin{equation}
+  \mathfrak{R}_{m}\left(\mathcal{G}_{\mu}\right) \leq \sqrt{\frac{2 \mu}{m}}.
+\end{equation}
+
+We have, with probability at least $1-\delta$, and $Q \in \mathcal{G}_{\mu}$ 
+
+\begin{equation}
+  \underset{\underset{z \sim D}{h \sim Q}}{\mathbb{E}}[L(h, z)] \leq \underset{h \sim Q}{\mathbb{E}}\left[\frac{1}{m} \sum_{i=1}^{m} L\left(h, z_{i}\right)\right]+
+  2 \sqrt{\frac{2 \mu}{m}}
+  +\sqrt{\frac{\log \frac{1}{\delta}}{2 m}} \label{eq:r_comp}
+\end{equation}
+
+
+
+Comsidering some a,
+
+\begin{equation}
+  \Delta(\mathcal{H}) =  \{Q \in \Delta(\mathcal{H}): \mathrm{D}(Q \| P) \leq a\} 	\cup (\bigcup_{j=1}^{\infty}\left\{Q \in \Delta(\mathcal{H}): a 2^{j-1}<D(Q \| P) \leq a 2^{j}\right\})
+\end{equation}
+
+For a = 1,
+
+
+\begin{equation}
+    \Delta(\mathcal{H}) =  \{Q \in \Delta(\mathcal{H}): \mathrm{D}(Q \| P) \leq 1\} 	\cup (\bigcup_{j=1}^{\infty}\left\{Q \in \Delta(\mathcal{H}): 2^{j-1}<D(Q \| P) \leq 2^{j}\right\})
+\end{equation}
+
+We denote $\Delta{(H)} = \Delta{(H_0)} \cup \Delta{(H_1)} \cup ...\Delta{(H_{\infty})}   $,
+
+where $\Delta(H_0) =\{Q \in \Delta(\mathcal{H}): \mathrm{D}(Q \| P) \leq 1\}$ 
+
+and $\Delta(H_j)$ for $j>0$ denote ${Q \in \Delta(\mathcal{H}): 2^{j-1}<D(Q \| P) \leq 2^{j}}$.
+
+
+The definition can be combined as,
+
+\begin{equation}
+    % \label{eq:alpha}
+    \Delta(H_j) =
+    \left\{
+           \begin{array}{lcl}
+            \{Q \in \Delta(\mathcal{H}): 0 \leq D(Q \| P) \leq 1\} & j=0\\
+            \{Q \in \Delta(\mathcal{H}):  2^{j-1}<D(Q \| P) \leq 2^{j}\} &j \geq 1 
+           \end{array}
+        \right.
+\end{equation}
+
+% \begin{equation}
+%     {\Delta(K_i)} =\{Q \in \Delta(\mathcal{H}): 0<D(Q \| P) \leq 2^{i}\}
+% \end{equation}
+
+Applying \eqref{eq:r_comp}, with probability at most $\delta_j = \frac{1}{(2^{j+1})}\delta$, and $Q \in \mathcal{G}_{2^j}$, we have,
+
+\begin{align}
+    \underset{\underset{z \sim D}{h \sim Q}}{\mathbb{E}}[L(h, z)] 
+    % &> \underset{\underset{z \sim D}{h \sim Q, Q\in \Delta(K_i)}}{\mathbb{E}}[L(h, z)] \\
+    &> \underset{h \sim Q}{\mathbb{E}}\left[\frac{1}{m} \sum_{i=1}^{m} L\left(h, z_{i}\right)\right]+
+    2 \sqrt{\frac{2 (2^j)}{m}}
+    +\sqrt{\frac{\log \frac{1}{\delta_j}}{2 m}} \label{eq:ori}
+\end{align}
+
+Note that $\Delta(H_j) \subseteq \mathcal{G}_{2^j}$, then for all  $Q \in \Delta(H_j)$, \eqref{eq:ori} still holds. And we name this inequality \eqref{eq:ori} as,
+
+\begin{align}
+    LHS > RHS_j.
+\end{align}
+
+
+
+\textbf{We want to prove (partial result, not final target):} with at least probability 1-$\delta_j$, we have,
+\begin{align}
+    \underset{\underset{z \sim D}{h \sim Q}}{\mathbb{E}}[L(h, z)] \leq \underset{h \sim Q}{\mathbb{E}}\left[\frac{1}{m} \sum_{i=1}^{m} L\left(h, z_{i}\right)\right]
+    + ( 4 + \frac{1}{\sqrt{e}} )\sqrt{\frac{\max{(1,D(Q||P))}}{m}} + \sqrt{\frac{\log \frac{1}{\delta}}{2 m}}\label{eq:target}
+\end{align}
+
+
+\textbf{We can convert it to:} with at most probability $\delta_j$, we have,
+\begin{align}
+    \underset{\underset{z \sim D}{h \sim Q}}{\mathbb{E}}[L(h, z)] &> \underset{h \sim Q}{\mathbb{E}}\left[\frac{1}{m} \sum_{i=1}^{m} L\left(h, z_{i}\right)\right]
+    + ( 4 + \frac{1}{\sqrt{e}} )\sqrt{\frac{\max{(1,D(Q||P))}}{m}} + \sqrt{\frac{\log \frac{1}{\delta}}{2 m}} \label{eq:LR_i}
+\end{align}
+
+We name it as
+\begin{equation}
+    LHS > RHS'.
+\end{equation}
+
+% for $\Delta(H_j)$.
+
+We have with at most probability $\delta_j$, $LHS > RHS_j$ according to \eqref{eq:ori}, if we can prove that $RHS' > RHS_j$, thus we have with at most probability $\delta_j$, $LHS > RHS'$.
+
+\textbf{We want to prove currently is $RHS' > RHS_j$,} when $Q \in \Delta(H_j)$.
+
+\begin{align}
+\begin{aligned}
+    \iff
+    & \underset{h \sim Q}{\mathbb{E}}\left[\frac{1}{m} \sum_{i=1}^{m} L\left(h, z_{i}\right)\right]
+    + ( 4 + \frac{1}{\sqrt{e}} )\sqrt{\frac{\max{(1,D(Q||P))}}{m}} + \sqrt{\frac{\log \frac{1}{\delta}}{2 m}} \\
+    &\geq \underset{h \sim Q}{\mathbb{E}}\left[\frac{1}{m} \sum_{i=1}^{m} L\left(h, z_{i}\right)\right]+
+    2 \sqrt{\frac{2 \mu}{m}}
+    +\sqrt{\frac{\log \frac{1}{\delta_j}}{2 m}}
+\end{aligned}
+\end{align}
+
+\begin{align}
+    \iff
+    & 
+    ( 4 + \frac{1}{\sqrt{e}} )\sqrt{\frac{\max{(1,D(Q||P))}}{m}} + \sqrt{\frac{\log \frac{1}{\delta}}{2 m}} 
+    \geq 
+    (2 \sqrt{\frac{2^{j+1}}{m}}
+    +\sqrt{\frac{\log \frac{1}{\delta_j}}{2 m}})
+\end{align}
+
+\begin{align}
+    \iff ( 4 + \frac{1}{\sqrt{e}} )\sqrt{\frac{\max{(1, 2^j) }}{m}} + \sqrt{\frac{\log \frac{1}{\delta}}{2 m}} 
+    \geq 
+    (2 \sqrt{\frac{2^{j+1}}{m}}
+    +\sqrt{\frac{\log \frac{1}{\delta_j}}{2 m}}), \label{eq:20}
+\end{align}
+
+
+
+\begin{align}
+    \iff ( 4 + \frac{1}{\sqrt{e}} )\sqrt{\frac{2^j }{m}} + \sqrt{\frac{\log \frac{1}{\delta}}{2 m}} 
+    \geq 
+    (2 \sqrt{\frac{{2^{j+1}}}{m}}
+    +\sqrt{\frac{\log \frac{1}{\delta_j}}{2 m}})
+\end{align}
+
+
+\begin{align}
+    \iff ( 4 + \frac{1}{\sqrt{e}} ) \sqrt{2^j}  + \sqrt{\frac{\log \frac{1}{\delta}}{2 }} 
+    \geq 
+    (2 \sqrt{2^{j+1}})
+    +\sqrt{\frac{\log \frac{2^{j+1}}{\delta}}{2 }})
+\end{align}
+
+
+\begin{align}
+    \iff ( 4 + \frac{1}{\sqrt{e}} ) \sqrt{2^j} + \sqrt{\frac{\log \frac{1}{\delta}}{2 }} 
+    \geq 
+    (2 \sqrt{2^{j+1}})
+    +\sqrt{\frac{(j+1) + \log \frac{1}{\delta}}{2 }})
+\end{align}
+
+\begin{align}
+    \iff ( \frac{1}{\sqrt{e}} ) \sqrt{2^j} + \sqrt{\frac{\log \frac{1}{\delta}}{2 }} 
+    \geq 
+    \sqrt{\frac{(j+1) + \log \frac{1}{\delta}}{2 }}) 
+\end{align}
+
+where \eqref{eq:20} is from $Q \in \Delta(H_j)$.
+
+We have 
+\begin{equation}
+    \frac{t}{e} \geq \frac{\log (2 t)}{2}
+\end{equation}
+
+With $t = 2^i$, we have
+
+\begin{align}
+    \frac{2^j}{e} 
+    &\geq \frac{\log (2^{j+1})}{2} \\
+    &\geq \frac{(j+1)}{2}
+\end{align}
+
+\begin{align}
+    % \iff 
+    \sqrt{\frac{2^j}{e}}   + \sqrt{\frac{\log \frac{1}{\delta}}{2 }} 
+    \geq 
+    \sqrt{\frac{2^j}{e} + \frac{ \log \frac{1}{\delta}}{2 }}  
+    \geq
+    \sqrt{\frac{(j+1)}{2} + \frac{ \log \frac{1}{\delta}}{2 }} \label{eq:final}
+\end{align}
+
+
+We have proved \eqref{eq:final}, thus we have proved the \eqref{eq:LR_i}.
+
+We name the inequality \eqref{eq:target} holds as event $E_j = 1$, and the inequality does not hold as $E_j = 0$, the final inequality \eqref{eq:final_target} holds as event $E=1$, the final inequality does not hold as $E=0$.
+
+\begin{align}
+&\operatorname{Pr}\left[E=0\right] \\
+&=\operatorname{Pr}\left[\bigcup_{j \in [0,\infty]} Q \in \Delta(H_j): E_j=0 \right] \\
+&\leq\sum_{j \in [0,\infty]} \operatorname{Pr}\left[ Q \in \Delta(H_j) :E_j=0 \right] && \text{(Union Bound)}\\
+&=\sum_{j \in [0,\infty]} \operatorname{Pr}\left[ Q \in \Delta(H_j): LHS > RHS' \right] \\
+&\leq\sum_{j \in [0,\infty]} \operatorname{Pr}\left[ Q \in \Delta(H_j) : LHS > RHS_j \right] && (RHS' > RHS_i) \\ 
+% &\leq \sum_{h \in H_{\epsilon}} \operatorname{Pr}\left[\widehat{R}_{S}(h)=0\right] \\
+&= \delta_0 + \delta_1 + ... \delta_{\infty} && \text{(Probability from \eqref{eq:ori})} \\
+&= (1/2 + 1/4 + 1/8 + ... + 1/2^{\infty}) \delta  \\
+&= (\sum_{j=0}^{\infty} \frac{1}{2^j})\delta \\
+&= \delta
+\end{align}
+
+With at most probability $\delta$, we have proved,.
+\begin{equation}
+    \underset{h \sim Q \atop z \sim \mathcal{D}}{\mathbb{E}}[L(h, z)] > \underset{h \sim Q}{\mathbb{E}}\left[\frac{1}{m} \sum_{i=1}^{m} L\left(h, z_{i}\right)\right]+\left(4+\frac{1}{\sqrt{e}}\right) \sqrt{\frac{\max \{\mathrm{D}(Q \| P), 1\}}{m}}+\sqrt{\frac{\log \frac{1}{\delta}}{2 m}}
+\end{equation}
+
+With at least probability 1-$\delta$, we have proved,
+\begin{equation}
+    \underset{h \sim Q \atop z \sim D}{\mathbb{E}}[L(h, z)] \leq \underset{h \sim Q}{\mathbb{E}}\left[\frac{1}{m} \sum_{i=1}^{m} L\left(h, z_{i}\right)\right]+\left(4+\frac{1}{\sqrt{e}}\right) \sqrt{\frac{\max \{\mathrm{D}(Q \| P), 1\}}{m}}+\sqrt{\frac{\log \frac{1}{\delta}}{2 m}}\label{eq:final_target}
+\end{equation}
+
+% Where \eqref{eq:qqq} is from (RHS' > RHS_i).
+
+\newpage
+\section*{Rademacher complexity}
+\section{}
+\subsection{(a)}
+
+\begin{align}
+    \widehat{\Re}_{\mathcal{S}}(\mathcal{H})&=\underset{\boldsymbol{\sigma}}{\mathbb{E}}\left[\sup _{h \in \mathcal{H}} \frac{1}{m} \sum_{i=1}^{m} \sigma_{i} h\left(\mathbf{x}_{i}\right)\right] \\
+    &=\frac{1}{m}
+    \underset{\boldsymbol{\sigma}}{\mathbb{E}}
+    \left[
+        \sup _{h \in \mathcal{H}}  \mathbf{w} \sum_{i=1}^{m} \sigma_{i}  \mathbf{x_i}
+    \right] \\
+    % &= \frac{\Lambda}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}
+    % \left[
+    %     \sup _{h \in \mathcal{H}} \sum_{i=1}^{m} \sigma_{i} x_i
+    % \right] \\
+    &= \frac{\Lambda}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}
+    \left[
+    \left\|\sum_{i=1}^{m} \sigma_{i} \mathbf{x}_{i}\right\|_{\infty}
+    \right] && \text{(by the definition of dual norm)} \\
+    &= \frac{\Lambda}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}
+    \left[
+        \underset{j \in d}{\max}
+        \left|
+            \sum_{i=1}^{m} \sigma_{i} {x}_{ij}
+        \right|
+    \right]  \\
+    &= \frac{\Lambda}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}
+    \left[
+        \underset{j \in d}{\max}
+        \underset{s \in \{-1, +1\}}{\max}
+            s \sum_{i=1}^{m} \sigma_{i} {x}_{ij}
+    \right]  \\
+    &= \frac{\Lambda}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}
+    \left[
+        \underset{\mathbf{z} \in A}{\sup}
+            \sum_{i=1}^{m} \sigma_{i} z_i
+    \right]  
+    % &= \frac{\Lambda}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}
+    % \left[
+    %     \underset{\mathbf{z} \in A}{\sup}
+    %         \sum_{i=1}^{m} \sigma_{i} z_i
+    % \right]  
+\end{align}
+
+Where $A$ is the column vector set in M.
+
+\begin{equation}
+    A := \left\{s\left(x_{1 j}, \ldots, x_{m j}\right)^{\top}: j \in[d], s \in\{-1,+1\}\right\}
+\end{equation}
+
+For any $z \in A$, we have,
+\begin{equation}
+    \|\mathbf{z}\|_{2} \leq \sup _{\mathbf{z} \in A}\|\mathbf{z}\|_{2}=\left\|\mathbf{X}^{\top}\right\|_{2, \infty}
+\end{equation}
+
+Using Massart's lemma, A contains at most 2N elements, we have,
+\begin{equation}
+    \widehat{\Re}_{S}(\mathcal{H}) \leq \frac{\Lambda}{m} \sqrt{2 \log (2 N)}\left\|X^{\top}\right\|_{2, \infty} .
+\end{equation}
+
+\newpage
+
+\subsection{(b)}
+
+% \begin{align}
+%   \widehat{\Re}_{\mathcal{S}}\left(\mathcal{F}_{p}\right) &=\frac{1}{m} \underset{\sigma}{\mathbb{E}}\left[\sup _{\|\mathbf{w}\|_{p} \leq \Lambda} \mathbf{w} \cdot \sum_{i=1}^{m} \sigma_{i} \mathbf{x}_{i}\right] \\
+%   &=\frac{\Lambda}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}\left[\left\|\mathbf{u}_{\boldsymbol{\sigma}}\right\|_{p^{*}}\right] \\
+%   & \leq \frac{\Lambda}{m}\left[\underset{\boldsymbol{\sigma}}{\mathbb{E}}\left[\left\|\mathbf{u}_{\boldsymbol{\sigma}}\right\|_{p^{*}}^{p^{*}}\right]\right]^{\frac{1}{p^{*}}} && \text{(Jensen’s inequality)} \\
+%   &=\frac{\Lambda}{m}\left[\sum_{j=1}^{d} \underset{\boldsymbol{\sigma}}{\mathbb{E}}\left[\left|\mathbf{u}_{\boldsymbol{\sigma}, j}\right|^{p^{*}}\right]\right]^{\frac{1}{p^{*}}} 
+% \end{align}
+
+\textbf{Case 1: $p \leq 2$}
+By directly applying Jensen's inequality, we get,
+
+$C_1 = C_2 = 1,$
+
+\begin{equation}
+    \underset{\mathbf{\sigma}}{\mathbb{E}}\left[\left|\sum_{i=1}^{m} \sigma_{i} a_{i}\right|^{p}\right] \leq \left(\sum_{i=1}^{m} a_{i}^{2}\right)^{\frac{p}{2}}.
+\end{equation}
+
+
+\textbf{Case 2: $p > 2$}
+
+\begin{align}
+    \mathbb{E}\left[e^{\sigma \mathbf{a}}\right]
+    &=\prod_{i=1}^{m} \mathbb{E}
+        \left[
+            e^{\sigma_i a_i}
+        \right]\\
+    &=\prod_{i=1}^{m} 
+        \frac{e^{a_i}+e^{-a_i}}{2}\\
+    &=\prod_{i=1}^{m} 
+        \cosh 
+            \left(
+             a_i
+            \right) \\
+    &\leq
+    e^{\frac{1}{2} \sum_{i=1}^{m}  a_{i}^{2}} && (\cosh (x) \leq e^{\frac{1}{2} x^{2}})\\ 
+    &\leq
+    e^{ \frac{1}{2} \|\bm{a}\|_{2}^{2} }
+\end{align}
+
+\begin{equation}
+    \begin{aligned}
+        \mathbb{E}[\cosh (\bm{a} \cdot \bm{\sigma})] 
+        &=\frac{1}{2} \mathbb{E}\left[e^{\bm{a} \cdot \bm{\sigma}}+e^{-\bm{a} \cdot \bm{\sigma}}\right] \\
+        & \leq e^{\frac{1}{2} \|\bm{a}\|_{2}^{2}}
+    \end{aligned}
+\end{equation}
+
+Since $\cosh (x)$ grows faster than $x^{p}$, for any $0<p<\infty$, there exists a positive constant $B_{p}$ satisfying $|x|^{p} \leq B_{p} \cosh (x)$. Hence,
+
+\begin{equation}
+    {\mathbb{E}\left[| \mathbf{a} \cdot \bm{\sigma} |^{p}\right]} \leq B_{p} \mathbb{E}[\cosh (\mathbf{a})] \leq B_{p} e^{\frac{1}{2} \|\mathbf{a}\|_{2}^{2}}
+\end{equation}
+
+\begin{equation}
+    \mathbb{E}\left[|\mathbf{a} \cdot \bm{\sigma}|^{p}\right] \leq C_{p}\|\mathbf{a}\|_{2}^{p}
+\end{equation}
+
+\begin{equation}
+    \underset{\mathbf{\sigma}}{\mathbb{E}}\left[\left|\sum_{i=1}^{m} \sigma_{i} a_{i}\right|^{p}\right] \leq C_P \left(\sum_{i=1}^{m} a_{i}^{2}\right)^{\frac{p}{2}}.
+\end{equation}
+
+\begin{equation}
+    C_{p}= B_{p} \exp \left( 1/2\right)
+\end{equation}
+
+\newpage
+
+\subsection{(c)}
+
+\begin{equation}
+    c_{p}\left(\sum_{i=1}^{m} a_{i}^{2}\right)^{\frac{p}{2}} \leq \underset{\sigma}{\mathbb{E}}\left[\left|\sum_{i=1}^{m} \sigma_{i} a_{i}\right|^{p}\right]
+\end{equation}
+
+\textbf{Case 1: $p \geq 2$}
+
+Directly applying Jensen's inequality, we get,
+
+\begin{equation}
+    \mathbb{E}\left[|a \cdot \sigma|^{p}\right] \geq \mathbb{E}\left[(a \cdot \sigma)^{2}\right]^{p / 2}=\|a\|_{2}^{p}
+\end{equation}
+
+$c_p = 1 \text{ for } p\geq2$
+
+\textbf{Case 2: $p < 2$}
+
+We choose $q > 2$,
+
+\begin{equation}
+    \begin{aligned}
+    \|a\|_{2}^{2(q-p)} &=\mathbb{E}\left[|a \cdot \sigma|^{2}\right]^{q-p} \\
+    & \leq \mathbb{E}\left[|a \cdot \sigma|^{p}\right]^{q-2} \mathbb{E}\left[|a \cdot \sigma|^{q}\right]^{2-p} \\
+    & \leq \mathbb{E}\left[|a \cdot \sigma|^{p}\right]^{q-2} C_{q}^{2-p}\|a\|_{2}^{q(2-p)}
+    \end{aligned}
+\end{equation}
+
+\begin{align}
+    \mathbb{E}\left[|a \cdot \sigma|^{p}\right] \geq C_{q}^{(p-2)/(q-2)} \|a\|_{2}^{p},
+\end{align}
+
+By using the $\|a\|_2 = 1$.
+
+\begin{equation}
+    c_{p}=C_{q}^{(p-2) /(q-2)},
+\end{equation}
+
+where $C_{q}$ is the constant in part (b).
+
+
+\subsection{(d)}
+
+% For $p=1$, 
+
+\begin{equation}
+    \begin{aligned}
+    \widehat{\mathcal{R}}_{\mathcal{S}}
+    \left(H\right) &=\underset{\boldsymbol{\sigma}}{\mathbb{E}}
+    \left[\sup _{\|\mathbf{w}\|_{1} \leq \Lambda} \mathbf{w} \cdot \sum_{i=1}^{m} \sigma_{i} \mathbf{x}_{i}\right] \\
+    &=\frac{\Lambda}{m} 
+    \underset{\boldsymbol{\sigma}}{\mathbb{E}}
+        \left[
+            \sup _{\|\mathbf{w}\|_{1} \leq \Lambda}
+            \left| \sum_{i=1}^{m} \sigma_{i} \mathbf{x}_{i} \right| 
+        \right]\\
+    &\geq c_1 \frac{\Lambda}{m} 
+    \left[
+        \sup _{\|\mathbf{w}\|_{1} \leq \Lambda} \|x\|_{2}^{p} 
+    \right] \\
+    &= c_1 \frac{\Lambda}{m}\left\|X^{\top}\right\|_{2, \infty} \\
+    % &= c_1 \frac{\Lambda}{m}   
+    % & \geq \frac{\Lambda}{m}\left\|\mathbb{E}{\mathbb{\sigma}}\left[\left|\sum_{i=1}^{m} \sigma_{i} \mathbf{x}_{i}\right|\right]\right\|_{p^{*}} \\
+    % &=\frac{\Lambda}{m}\left[\sum_{j=1}^{d}\left(\underset{\boldsymbol{\sigma}}{\mathbb{E}}\left[\left|\sum_{i=1}^{m} \sigma_{i} \mathbf{x}_{i j}\right|\right]\right)^{p^{*}}\right]^{\frac{1}{p^{*}}}
+    \end{aligned}
+\end{equation}
+
+\begin{equation}
+    \widehat{\Re}_{S}(\mathcal{H}) \geq c_{1} \frac{\Lambda}{m}\left\|X^{\top}\right\|_{2, \infty}
+\end{equation}
+
+
+
+
+\subsection{(e)}
+
+We consider the dataset with dimension $N = 2^m$ and all the elements of data $x_{ij} \in \{-1,1\}$, so the matrix $X \in \mathbf\{-1,1\}^{2^m \times m}$.
+
+\begin{align}
+\widehat{\mathfrak{R}}_{\mathcal{S}}\left(H\right)
+&=\frac{1}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}\left[\sup _{\|\mathbf{w}\|_{1} \leq \Lambda} \mathbf{w} \cdot \sum_{i=1}^{m} \sigma_{i} \mathbf{x}_{i}\right] \\
+&=\frac{\Lambda}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}\left[\left\|\sum_{i=1}^{m} \sigma_{i} \mathbf{x}_{i}\right\|_{\infty}\right] \\
+% &=\frac{1}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}
+% \begin{equation}
+&=\frac{\Lambda}{m} \underset{\boldsymbol{\sigma}}{\mathbb{E}}\left[\max _{j \in [1,d]} \sum_{i=1}^{m} \sigma_{i}\left(\mathbf{x}_{i}\right)_{j}\right] \\
+&=\frac{\Lambda}{m} m \\
+&=\Lambda \\
+&=\frac{\Lambda}{m} \sqrt{m} \sqrt{m} \\
+&=\frac{\Lambda}{m} \sqrt{\log{N}} {\|X^T|\|_{2, \infty}}
+\end{align} 
+
+\begin{align}
+    {\|X^T|\|_{2, \infty}} 
+    &= \left\|\left(\left\|{X^T}_{1}\right\|_{2}, \ldots,\left\|{X^T}_{N}\right\|_{2}\right)\right\|_{\infty} \\
+    &= \sqrt{m}
+\end{align}
+
+We have given a example and showed the upper bound is tight for $p=1$.
+
+
+\section{Note}
+
+I notice something strange to me:
+
+In paper \cite{awasthi2020rademacher}, the (p,q) group norm is given as
+
+\begin{equation}
+    \|\mathbf{M}\|_{p, q}=\left\|\left(\left\|\mathbf{M}_{1}\right\|_{1}, \ldots,\left\|\mathbf{M}_{d}\right\|_{p}\right)\right\|_{q}
+\end{equation}
+
+which is different from the (p,q) group norm definition here.
+
+
+\bibliographystyle{plain}
+\bibliography{main}
+\nocite*{}
+
+
+
+
+\end{document}
