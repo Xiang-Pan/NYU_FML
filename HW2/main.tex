@@ -26,12 +26,15 @@
 Show that there exists a set of $n+1$ points in $\mathbb{R}^{n}$ that can be shattered by $\mathcal{B}_{n}$. Conclude that VCdim $\left(\mathcal{B}_{n}\right) \geq n+1$
 
 
-We have n+1 points can determine a unique ball in $\mathbb{R}^{n}$, and we have the ball center c, radius r.
+Set condition: We have n+1 points can determine a unique ball in $\mathbb{R}^{n}$, and we have the ball center c, radius r.
 
-For those negative points $p_n \in P_{N}$, we have the radius from $p_n$ to c, thus we can constuct the new $p_n' = p_n + \delta(c-p_n)$.
-$\delta>0$. Thus we can constuct a new ball with new n+1 points set ${P_N'} \bigcup {P_P}$. For the new ball B (c', r'), the negative points distance $r>r'$, the positive points $r'\leq r'$. Thus B (c', r') can shatter n+1 points in $\mathbb{R}^{n}$.
+For those negative points $p_n \in P_{N}$, we have the radius vector from $p_n$ to c, thus we can constuct the new $p_n' = p_n + \delta(c-p_n)$, $\delta>0$. $p_n' \in P_N'$, $P_N'$ is the set of $p_n'$.
 
-For $r > r'$, the B (c,r) and B (c',r') are joint, since $P_P$ are in the B (c,r) and B (c',r'). Note that, $P_N'$ are strictly inside B (c,r), it is easy to check that $P_N$ are strictly outside B (c',r').
+ Thus we can constuct a new ball with new n+1 points set ${P_N'} \bigcup {P_P}$. For the new ball B (c', r'), the negative points distance $r>r'$, the positive points $r'\leq r'$. Thus B (c', r') can shatter n+1 points in $\mathbb{R}^{n}$.
+
+To prove $r > r'$, the B (c,r) and B (c',r') are joint, since $P_P$ are in the B (c,r) and B (c',r'). Note that, $P_N'$ are strictly inside B (c,r), it is easy to check that $P_N$ are strictly outside B (c',r').
+
+There exists a set of (n+1) points in $R^n$ that can be shattered by B(n). We can conclude that VCdim $\left(\mathcal{B}_{n}\right) \geq n+1$.
 
 \subsection*{(b)}
 
@@ -210,12 +213,12 @@ By using the KKT\eqref{eq:2b_xi},
     \begin{aligned}
         \mathcal{L}(\mathbf{w}, \boldsymbol{\xi}, \bm{\alpha})
          & = \beta \frac{1}{2}  \sum_{y=1}^{c} {\left\|\mathbf{w}_{y} \cdot \frac{1}{\sqrt{\bm{\mu}}} \right\|^{2}}
-        + C \sum_{i=1}^{m} \xi_{i}
+        + \sum_{i=1}^{m} \xi_{i}
         - \sum_{i, y} \alpha_{i, y}\left(\mathbf{w}_{y_{i}} \cdot \Phi\left(x_{i}\right)-\mathbf{w}_{y} \cdot \Phi\left(x_{i}\right)\right) + \delta_{y_i, y} - 1 + \xi_{i}                                             \\
-         & = \beta \frac{1}{2}  \sum_{y=1}^{c} {\left\|\mathbf{w}_{y} \cdot \frac{1}{\sqrt{\bm{\mu}}} \right\|^{2}} + C \sum_{i=1}^{m} \xi_{i} - \sum_{i, y} \alpha_{i, y} \xi_{i} + \sum_{i, y} \alpha_{i, y} \delta_{y_i, y}
+         & = \beta \frac{1}{2}  \sum_{y=1}^{c} {\left\|\mathbf{w}_{y} \cdot \frac{1}{\sqrt{\bm{\mu}}} \right\|^{2}} + \sum_{i=1}^{m} \xi_{i} - \sum_{i, y} \alpha_{i, y} \xi_{i} + \sum_{i, y} \alpha_{i, y} \delta_{y_i, y}
         - \sum_{i, y} \alpha_{i, y} \left(\mathbf{w}_{y_{i}} \cdot \Phi\left(x_{i}\right)-\mathbf{w}_{y} \cdot \Phi\left(x_{i}\right)\right)                                                                            \\
          & = \beta \frac{1}{2}  \sum_{y=1}^{c} {\left\|\mathbf{w}_{y} \cdot \frac{1}{\sqrt{\bm{\mu}}} \right\|^{2}}
-        + C \sum_{i=1}^{m} \xi_{i} - \sum_{i} \xi_i \underbrace{\sum_{y} \alpha_{i, y}}_{=C} + \sum_{i, y} \alpha_{i, y} \delta_{y_i, y} \\
+        + \sum_{i=1}^{m} \xi_{i} - \sum_{i} \xi_i \underbrace{\sum_{y} \alpha_{i, y}}_{=1} + \sum_{i, y} \alpha_{i, y} \delta_{y_i, y} \\
         &  - \sum_{i, y} \alpha_{i, y} \left(\mathbf{w}_{y_{i}} \cdot \Phi\left(x_{i}\right)-\mathbf{w}_{y} \cdot \Phi\left(x_{i}\right)\right)                                                                            \\
          & =
         \underbrace{\frac{1}{2} \beta  \sum_{y=1}^{c} {\left\|\mathbf{w}_{y} \cdot \frac{1}{\sqrt{\bm{\mu}}} \right\|^{2}}}_{=P1}
@@ -607,9 +610,11 @@ $L$ is concave in $\bm{\alpha}$.We define the new dual variable $\boldsymbol{\ha
 %     \end{aligned}
 % \end{equation}
 
-
+\newpage
 
 \section*{SVMs hand-on}
+
+The code is available at \url{https://github.com/Xiang-Pan/NYU_FML/blob/master/HW2/c.ipynb}.
 
 \section*{3}
 \includegraphics[width=\textwidth]{images/C3_cross_val_error_vs_d.png}
