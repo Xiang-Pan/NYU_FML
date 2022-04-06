@@ -1,0 +1,213 @@
+\documentclass{article}
+% \pdfplotsset{compat=1.18}
+\usepackage[utf8]{inputenc}
+\usepackage{bbm} 
+\usepackage{tabularx}
+\usepackage{amsopn}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{bm}
+\usepackage{amssymb}
+% \usepackage{newtxmath}
+
+\title{%
+     Homework 3 \\
+    \large Fondations of Machine Learning \\}
+\author{Xiang Pan (xp2030)}
+
+\begin{document}
+
+
+\maketitle
+\section*{Boosting}
+\section{}
+\subsection*{(a)}
+
+\begin{equation}
+    \ell(y h(x), r(x))= \begin{cases}1_{y h(x) \leq 0}, & r(x)>0 \\ c, & r(x) \leq 0\end{cases}
+\end{equation}
+$$
+    \text { where } c \text { is a positive constant less than } 1 / 2 . \text { For simplicity, define } b=2 \sqrt{\frac{1-c}{c}} \text {. }
+$$
+
+\begin{equation}
+    \Psi_{1}(y h(x), r(x))=\max \left\{e^{r(x)-y h(x)}, c e^{-b r(x)}\right\}
+\end{equation}
+
+\begin{equation}
+    \Psi_{2}(y h(x), r(x))=e^{r(x)-y h(x)}+c e^{-b r(x)}
+\end{equation}
+
+Show that $\Psi_{1}$ is convex in $(y h(x), r(x))$ and it upper-bounds $\ell$. Show that $\Psi_{2}$ is convex in $(y h(x), r(x))$ and it upper-bounds $\Psi_{1}$.
+
+\begin{equation}
+    f(\lambda x+(1-\lambda) y) \leq \lambda f(x)+(1-\lambda) f(y)
+\end{equation}
+
+
+\textbf{Solution:}
+
+\textbf{Bounding:}
+
+\begin{align}
+    \Psi_{1} ( y h(x), r(x) ) & = \max \left\{e^{r(x)-y h(x)}, c e^{-b r(x)}\right\}
+\end{align}
+
+
+if $r(x) > 0$ and $y h(x) > 0$, then $\ell(x) = 0$.
+
+We have $\ell(x) = 0 < \Phi_{1}(x)$
+
+if $r(x) > 0$ and $y h(x) \leq 0$, then $\ell(x) = 1$.  $r(x)> yh(x)$, $e^{r(x)-y h(x)} >1$.
+
+We have $\ell(x) = 1 < \Phi_{1}(x)$
+
+if $r(x) \leq 0$, then $\ell(x) = c$.
+
+\begin{align}
+    P(c) = c e^{-b r(x)}
+\end{align}
+
+
+\begin{align}
+    P(c) = c e^{-b r(x)} = c e^{-2 \sqrt{\frac{1-c}{c}} r(x)} \geq c
+\end{align}
+
+We have $\ell(x) = c \leq \Phi_1(x)$
+
+We always have the two components of $\Psi_{1}$ are positive, thus $\Psi_{1} < \Psi_{2}$.
+
+Thus, we have proved $\ell(x) < \Psi_1(x) < \Psi_2(x)$.
+
+We let $\Psi_1(x) = \Psi_1(x)$
+
+\textbf{Convex:}
+
+% \textbf{Part1:}
+
+% if $r(x) > 0$ and $y h(x) > 0$, then $\ell(x) = 0$.
+
+
+
+
+% if $r(x) > 0$ and $y h(x) \leq 0$, then $\ell(x) = 1$.
+
+
+
+
+% Give $x_1$, $x_2$,
+
+% \begin{align}
+%     \Psi_{1} (x_1) &= \max \left\{e^{r(x_1)-y h(x_1)}, c e^{-b r(x_1)}\right\} \\
+%     \Psi_{1} (x_2) &= \max \left\{e^{r(x_2)-y h(x_2)}, c e^{-b r(x_2)}\right\} 
+% \end{align}
+% \begin{align}
+%     \Psi_{1} (\lambda x_1 + (1-\lambda)  x_2) 
+%     &= \max \left\{e^{r(\lambda x_1 + (1-\lambda)  x_2)-y h(\lambda x_1 + (1-\lambda)  x_2)}, c e^{-b r(x_1)}\right\}
+% \end{align}
+\subsubsection*{(b)}
+
+$$
+    \Psi_{1, \mathcal{F}}=\left\{(x, y) \mapsto \min \left\{\Psi_{1}(y \mathbf{h}(x), \mathbf{r}(x)), 1\right\},(\mathbf{h}, \mathbf{r}) \in \mathcal{F}\right\}
+$$
+
+
+We denote the set $S = \{(h_1, r_1), (h_2, r_2), \cdots, (h_N, r_N)\}$
+
+% \begin{equation}
+%     \Phi(x) = \Psi_{1}(y \bm{h}(x), \bm{r}(x))
+% \end{equation}
+
+
+\begin{align}
+    Q(t) = \min \{t, 1 \} ,\quad {t>0}
+\end{align}
+
+
+\begin{equation}
+    \psi = Q \circ \phi
+\end{equation}
+
+
+% \begin{equation}
+%     t = \Psi_{1}(y \mathbf{h}(x), \mathbf{r}(x))
+% \end{equation}
+
+% \begin{equation}
+%     \Psi_{1, \mathcal{F}} = \phi \circ \Phi_1 \circ (r, h)
+% \end{equation}
+
+
+
+$$
+    \mathfrak{R}_{m}\left(\Psi_{1, \mathcal{F}}\right) \leq \mathfrak{R}_{m}(\mathcal{H})+(b+1) \Re_{m}(\mathcal{R})
+$$
+
+
+% The $\Phi_{1, \mathcal{F}}$ loss is 1-lipschitz, we can split into two parts, $\mathcal{H}$ part and $\mathcal{R}$ part.
+
+% Talagrand’s lemma,
+We hide x for simplicity.
+
+
+Frist we prove that $\mathcal{H}$ is convex.
+
+\begin{equation}
+    \mid Q \cdot \phi_{1}\left(h_{i}, r_{i}\right) -Q \cdot \phi_{2}\left(h_{j}, r_{j}\right) \mid \leq  |\left(h_{i}(x)-h_{j}(x)\right)+(b+1)\left[r_{i}(x)-r_{j}(x)\right] |
+\end{equation}
+
+\begin{align}
+    \mathfrak{R}_{m}\left(\Psi_{1, \mathcal{F}}\right)  & =     \mathfrak{R}_{m}\left(\Psi_{1, \mathcal{S}}\right)    && \text{(Convex Hull Theorem)}         \\
+                                                        & \leq   \mathfrak{R}_{m}(\mathcal{H}) + (1+b) \mathfrak{R}_{m}(\mathcal{R})    && \text{(Talagrand’s lemma)}         
+                                                    %    & = \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[ \sup_{Q \circ \Psi_1} \sum_{i=1}^{m} \sigma_{i} Q \circ \Psi_1 (x_i) \right]                                                                    \\
+                                                    %    & \leq    \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[ \sup_{\Psi_1} \sum_{i=1}^{m} \sigma_{i} \Psi_1 (x_i) \right]                                               &  & \text{(Talagrand’s lemma.)}  \\
+                                                    %    & \leq    \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[ \sup_{\Psi_2} \sum_{i=1}^{m} \sigma_{i} \Psi_2 (x_i) \right]                                                                                 \\
+                                                    %    & =    \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[ \sup_{(\bm h,\bm r) \in \mathcal{F} } \sum_{i=1}^{m} \sigma_{i} \Psi_2 (x_i) \right]                                                            \\
+                                                    %    & =    \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[ \sup_{(\bm h,\bm r) } \sum_{i=1}^{m} \sigma_{i} \left[ e^{r(x_i)-y_i h(x_i)}+c e^{-b r(x_i)} \right]  \right] &  & \text{(Convex Hull Theorem)} \\
+                                                    %    & =    \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[ \sup_{(\bm h, \bm r) } \sum_{i=1}^{m} \sigma_{i} \left[ e^{r(x_i)-y_i h(x_i)}  \right] \right]
+    % +     \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[ \sup_{(\bm r) } \sum_{i=1}^{m} \sigma_{i} \left[ c e^{-b r(x_i)} \right] \right]
+    % &\leq  \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[\sup _{\Phi \in \Phi_1} \sum_{i=1}^{m} \sigma_{i}    \left(x_{i}\right)\right] \\
+    %  & \leq  \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[\sup _{h \in H} \sum_{i=1}^{m} \sigma_{i} \Phi_2     \left(x_{i}\right)\right] \\
+    %  & =  \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[\sup _{h \in H} \sum_{i=1}^{m} \sigma_{i}  \left[ e^{r(x_i)-y h(x_i)}+c e^{-b r(x_i)} \right]\right] \\
+    %  &\leq \mathfrak{R}_{m}(\mathcal{H})+(b+1) \Re_{m}(\mathcal{R})
+    %  & =  \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[\sup _{h \in H} \sum_{i=1}^{m} \sigma_{i} \Phi_1     \left(y \mathbf{h}(x_i), \mathbf{r}(x_i)\right)\right] \\
+\end{align}
+
+
+
+% Rademacher Complexity of Convex Hulls
+
+\begin{equation}
+    \begin{aligned}
+        \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[\sup _{h \in H} \sum_{i=1}^{m} \sigma_{i}  h(x_i) \right]
+    \end{aligned}
+\end{equation}
+
+
+\begin{equation}
+    \begin{aligned}
+        \frac{1}{m} \underset{\bm{\sigma}}{\mathbb{E}}\left[\sup _{r \in R} \sum_{i=1}^{m} \sigma_{i}  r(x_i) \right]
+    \end{aligned}
+\end{equation}
+
+
+
+
+
+
+
+
+
+\newpage
+
+\bibliographystyle{plain}
+\bibliography{main}
+\nocite*{}
+
+
+
+
+\end{document}

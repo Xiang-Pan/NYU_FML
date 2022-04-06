@@ -1,4 +1,5 @@
 HW2/cached_datasets/
+*.zip
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
